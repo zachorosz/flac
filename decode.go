@@ -125,10 +125,6 @@ func (r *Reader) readBlock() (*MetadataBlock, bool) {
 	return b, true
 }
 
-func (r *Reader) readFrame() (ok bool) {
-	return true
-}
-
 func (r *Reader) ReadBlock() (*MetadataBlock, error) {
 	if r.err != nil {
 		return nil, r.err
