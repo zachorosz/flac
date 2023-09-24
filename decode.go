@@ -57,12 +57,11 @@ func (r *Reader) readFull(p []byte) (ok bool) {
 	return true
 }
 
-func (r *Reader) readByte(p *byte) (ok bool) {
+func (r *Reader) nextByte() (byte, bool) {
 	if !r.readFull(r.buf[:1]) {
-		return false
+		return 0, false
 	}
-	*p = r.buf[0]
-	return true
+	return r.buf[0], true
 }
 
 func (r *Reader) skip(n int) (ok bool) {

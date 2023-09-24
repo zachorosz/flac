@@ -46,8 +46,8 @@ func (r *Reader) decodeCueSheet() (*CueSheet, error) {
 		return nil, err
 	}
 
-	var flags byte
-	if !r.readByte(&flags) {
+	flags, ok := r.nextByte()
+	if !ok {
 		return nil, r.err
 	}
 
@@ -90,8 +90,8 @@ func (r *Reader) decodeCueSheetTrack() (*CueSheetTrack, error) {
 	}
 	track.ISRC = string(r.buf[:12])
 
-	var flags byte
-	if !r.readByte(&flags) {
+	flags, ok := r.nextByte()
+	if !ok {
 		return nil, r.err
 	}
 

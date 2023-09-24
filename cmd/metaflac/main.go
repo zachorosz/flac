@@ -93,6 +93,29 @@ func listMetadata(w io.Writer, prefix, file string) {
 				fmt.Fprintf(w, "%s\t\tcomment[%d]: %s\n", prefix, i, c)
 			}
 		case *flac.CueSheet:
+			fmt.Fprintf(w, "%s\tmedia catalog number: %s\n", prefix, b.CatalogNumber)
+			fmt.Fprintf(w, "%s\tlead-in: %d\n", prefix, b.NumLeadInSamples)
+			fmt.Fprintf(w, "%s\tis CD: %t\n", prefix, b.IsCD)
+			fmt.Fprintf(w, "%s\tnumber of tracks: %d\n", prefix, len(b.Tracks))
+			for i, t := range b.Tracks {
+				fmt.Fprintf(w, "%s\t\ttrack[%d]\n", prefix, i)
+				fmt.Fprintf(w, "%s\t\t\toffset: %d\n", prefix, t.OffsetSamples)
+				fmt.Fprintf(w, "%s\t\t\tnumber: %d\n", prefix, t.TrackNumber)
+				fmt.Fprintf(w, "%s\t\t\tISRC: %s\n", prefix, t.ISRC)
+				if t.IsAudio {
+					fmt.Fprintf(w, "%s\t\t\ttype: AUDIO\n", prefix)
+				} else {
+					fmt.Fprintf(w, "%s\t\t\ttype: NON-AUDIO\n", prefix)
+				}
+				fmt.Fprintf(w, "%s\t\t\tpre-emphasis: %t\n", prefix, t.PreEmphasis)
+				fmt.Fprintf(w, "%s\t\t\tnumber of index points: %d\n", prefix, len(t.Indices))
+
+				for j, p := range t.Indices {
+					fmt.Fprintf(w, "%s\t\t\t\tindex[%d]\n", prefix, j)
+					fmt.Fprintf(w, "%s\t\t\t\t\toffset: %d\n", prefix, p.OffsetSamples)
+					fmt.Fprintf(w, "%s\t\t\t\t\tnumber: %d\n", prefix, p.PointNumber)
+				}
+			}
 		case *flac.Picture:
 			fmt.Fprintf(w, "%s\ttype: %d (%s)\n", prefix, b.Type, b.Type)
 			fmt.Fprintf(w, "%s\tMIME type: %s\n", prefix, b.MimeType)
